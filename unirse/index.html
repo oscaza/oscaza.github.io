@@ -38,6 +38,7 @@
     <p class="small" id="codeHint">Este es el código de la mesa.</p>
   </div>
   <a class="btn primary" id="open" href="#">Abrir en Tardegelus</a>
+  <a class="btn secondary hidden" id="web" href="#">Entrar desde el navegador</a>
   <a class="btn secondary" id="play" href="https://play.google.com/store/apps/details?id=com.oscazapps.tardegelus">Descargar la app en Google Play</a>
   <button class="btn secondary hidden" id="copy" type="button">Copiar el código</button>
   <p class="small" id="after">¿Acabas de instalarla? Vuelve a pulsar el enlace que te pasaron y entrarás directamente en la mesa.</p>
@@ -49,32 +50,32 @@
     es: { title: '¡Te han invitado a una mesa!', intro: 'Entra en la mesa para apuntar tus rondas y saber lo que te toca pagar.', codeHint: 'Este es el código de la mesa.',
           open: 'Abrir en Tardegelus', play: 'Descargar la app en Google Play', copy: 'Copiar el código', copied: '¡Copiado!',
           after: '¿Acabas de instalarla? Vuelve a pulsar el enlace que te pasaron y entrarás directamente en la mesa.',
-          ios: 'De momento Tardegelus solo está para Android. Pide a alguien de la mesa que te añada como invitado.' },
+          ios: '¿Tienes iPhone? Entra desde el navegador con el botón de arriba, sin instalar nada.', web: 'Entrar desde el navegador' },
     en: { title: "You're invited to a table!", intro: 'Join the table to log your rounds and see what you owe.', codeHint: 'This is the table code.',
           open: 'Open in Tardegelus', play: 'Get the app on Google Play', copy: 'Copy the code', copied: 'Copied!',
           after: 'Just installed it? Tap the link you were sent again and you will go straight to the table.',
-          ios: 'For now Tardegelus is Android only. Ask someone at the table to add you as a guest.' },
+          ios: 'On iPhone? Join from your browser with the button above, nothing to install.', web: 'Join from the browser' },
     ca: { title: "T'han convidat a una taula!", intro: 'Entra a la taula per apuntar les teves rondes i saber què et toca pagar.', codeHint: 'Aquest és el codi de la taula.',
           open: 'Obrir a Tardegelus', play: "Descarregar l'app a Google Play", copy: 'Copiar el codi', copied: 'Copiat!',
           after: "Acabes d'instal·lar-la? Torna a tocar l'enllaç que t'han passat i entraràs directament a la taula.",
-          ios: "De moment Tardegelus només és per a Android. Demana a algú de la taula que t'afegeixi com a convidat." },
+          ios: 'Tens iPhone? Entra des del navegador amb el botó de dalt, sense instal·lar res.', web: 'Entrar des del navegador' },
     fr: { title: 'Tu es invité à une table !', intro: 'Rejoins la table pour noter tes tournées et savoir ce que tu dois.', codeHint: 'Voici le code de la table.',
           open: 'Ouvrir dans Tardegelus', play: "Télécharger l'appli sur Google Play", copy: 'Copier le code', copied: 'Copié !',
           after: "Tu viens de l'installer ? Touche à nouveau le lien reçu et tu arriveras directement à la table.",
-          ios: "Pour l'instant Tardegelus n'existe que sur Android. Demande à quelqu'un de la table de t'ajouter comme invité." },
+          ios: 'Sur iPhone ? Entre depuis le navigateur avec le bouton ci-dessus, rien à installer.', web: 'Entrer depuis le navigateur' },
     de: { title: 'Du bist an einen Tisch eingeladen!', intro: 'Komm an den Tisch, um deine Runden einzutragen und zu sehen, was du zahlst.', codeHint: 'Das ist der Tisch-Code.',
           open: 'In Tardegelus öffnen', play: 'App bei Google Play holen', copy: 'Code kopieren', copied: 'Kopiert!',
           after: 'Gerade installiert? Tippe noch einmal auf den Link und du landest direkt am Tisch.',
-          ios: 'Tardegelus gibt es vorerst nur für Android. Bitte jemanden am Tisch, dich als Gast hinzuzufügen.' },
+          ios: 'Du hast ein iPhone? Tritt mit dem Knopf oben im Browser bei, ohne etwas zu installieren.', web: 'Im Browser beitreten' },
     it: { title: 'Sei stato invitato a un tavolo!', intro: 'Entra nel tavolo per segnare i tuoi giri e sapere quanto devi.', codeHint: 'Questo è il codice del tavolo.',
           open: 'Apri in Tardegelus', play: "Scarica l'app su Google Play", copy: 'Copia il codice', copied: 'Copiato!',
           after: 'Appena installata? Tocca di nuovo il link che ti hanno mandato ed entrerai subito al tavolo.',
-          ios: 'Per ora Tardegelus è solo per Android. Chiedi a qualcuno del tavolo di aggiungerti come ospite.' }
+          ios: 'Hai un iPhone? Entra dal browser con il pulsante qui sopra, senza installare nulla.', web: 'Entra dal browser' }
   };
   var lang = (navigator.language || 'es').slice(0, 2).toLowerCase();
   var t = T[lang] || (lang === 'gl' || lang === 'eu' ? T.es : T.en);
   document.documentElement.lang = T[lang] ? lang : 'en';
-  ['title', 'intro', 'codeHint', 'open', 'play', 'copy', 'after', 'ios'].forEach(function (id) {
+  ['title', 'intro', 'codeHint', 'open', 'web', 'play', 'copy', 'after', 'ios'].forEach(function (id) {
     document.getElementById(id).textContent = t[id];
   });
 
@@ -97,6 +98,10 @@
   document.getElementById('open').href = open;
 
   if (code) {
+    // Sin la app (iPhone, ordenador…) se entra en la mesa con la versión web.
+    var web = document.getElementById('web');
+    web.href = '/app/unirse/' + code;
+    web.classList.remove('hidden');
     document.getElementById('code').textContent = code;
     document.getElementById('codeBox').classList.remove('hidden');
     var copy = document.getElementById('copy');
@@ -109,6 +114,9 @@
   }
   if (ios) {
     document.getElementById('ios').classList.remove('hidden');
+    // En iPhone aún no hay app: la web pasa a ser el botón principal.
+    document.getElementById('open').classList.add('hidden');
+    document.getElementById('web').classList.replace('secondary', 'primary');
     document.getElementById('play').classList.add('hidden');
     document.getElementById('after').classList.add('hidden');
   }
