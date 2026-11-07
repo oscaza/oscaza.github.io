@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.oscazapps.tardegelus",
+      "sha256_cert_fingerprints": [
+        "48:83:77:23:2B:D3:BF:CE:24:07:48:D8:90:E6:FA:86:7C:BF:97:6D:9E:B0:43:57:EF:DF:E2:2F:14:10:C6:57"
+      ]
+    }
+  }
+]
