@@ -32,12 +32,42 @@
   .card span { color: var(--muted); line-height: 1.4; font-size: 15px; }
   .card .emoji { font-size: 28px; display: block; margin-bottom: 6px; }
   .note { background: var(--soft); border-radius: 16px; padding: 16px; line-height: 1.5; }
+  nav.top { position: sticky; top: 0; z-index: 10; background: var(--dark); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.2); }
+  nav.top .in { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; gap: 8px; padding: 8px 16px; }
+  nav.top .brand { display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 900; font-size: 19px; margin-right: auto; }
+  nav.top .brand img { width: 32px; height: 32px; border-radius: 8px; background: #fff; }
+  nav.top .links { display: flex; gap: 4px; align-items: center; }
+  nav.top .links a { color: #fff; text-decoration: none; font-weight: 700; padding: 10px 12px; border-radius: 10px; font-size: 15px; }
+  nav.top .links a:hover, nav.top .links a:focus-visible { background: rgba(255,255,255,.15); }
+  nav.top .links a.cta { background: #fff; color: var(--dark); }
+  nav.top .toggle { display: none; background: none; border: 0; color: #fff; font-size: 28px; line-height: 1; padding: 6px 10px; cursor: pointer; border-radius: 10px; }
+  @media (max-width: 760px) {
+    nav.top .toggle { display: block; }
+    nav.top .links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch;
+      background: var(--dark); padding: 8px 12px 14px; box-shadow: 0 8px 16px rgba(0,0,0,.25); }
+    nav.top.open .links { display: flex; }
+    nav.top .links a { padding: 14px 12px; font-size: 17px; }
+  }
+  section[id] { scroll-margin-top: 64px; }
   footer { text-align: center; color: var(--muted); font-size: 14px; padding: 0 16px 32px; }
   footer a { color: inherit; }
 </style>
 </head>
 <body>
-<header>
+<nav class="top" id="nav">
+  <div class="in">
+    <a class="brand" href="#inicio"><img src="icono.png" alt="">Tardegelus</a>
+    <button class="toggle" type="button" aria-label="Abrir el menú" aria-expanded="false" aria-controls="links">☰</button>
+    <div class="links" id="links">
+      <a href="#como">¿Cómo funciona?</a>
+      <a href="#iphone">¿Tienes iPhone?</a>
+      <a href="#contacto">Contacto</a>
+      <a href="/app/">Entrar en la web</a>
+      <a class="cta" href="https://play.google.com/store/apps/details?id=com.oscazapps.tardegelus">Descargar la app</a>
+    </div>
+  </div>
+</nav>
+<header id="inicio">
   <img src="icono.png" alt="Icono de Tardegelus">
   <h1>Tardegelus</h1>
   <p>Apunta las rondas de la mesa y reparte lo que debe cada uno. Sin papelitos ni discusiones.</p>
@@ -46,6 +76,7 @@
   </div>
 </header>
 <main>
+  <section id="como">
   <h2>¿Cómo funciona?</h2>
   <div class="grid">
     <div class="card"><span class="emoji">🍻</span><b>Abre una mesa</b><span>Elige el bar y pasa el enlace o el QR a tus amigos para que se sienten contigo.</span></div>
@@ -53,15 +84,32 @@
     <div class="card"><span class="emoji">💶</span><b>Cuentas claras</b><span>Al final ves lo que paga cada uno, céntimo a céntimo.</span></div>
     <div class="card"><span class="emoji">📍</span><b>Bares y precios</b><span>Busca bares cerca y guarda su carta con los precios.</span></div>
   </div>
+  </section>
 
+  <section id="iphone">
   <h2>¿Tienes iPhone?</h2>
   <div class="note">
     La app de iPhone llegará más adelante. Mientras tanto, si alguien de la mesa te pasa su enlace,
     puedes entrar desde el navegador del móvil, sin instalar nada, y apuntar tus rondas como los demás.
   </div>
+  </section>
 </main>
-<footer>
+<footer id="contacto">
   Hecha en Huesca 💚🤍 · <a href="mailto:tardegelus@gmail.com">tardegelus@gmail.com</a>
 </footer>
+<script>
+(function () {
+  var nav = document.getElementById('nav');
+  var btn = nav.querySelector('.toggle');
+  function set(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? '✕' : '☰';
+  }
+  btn.addEventListener('click', function () { set(!nav.classList.contains('open')); });
+  nav.querySelectorAll('.links a').forEach(function (a) { a.addEventListener('click', function () { set(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+})();
+</script>
 </body>
 </html>
