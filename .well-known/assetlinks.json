@@ -1,11 +1,14 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.oscazapps.tardegelus",
       "sha256_cert_fingerprints": [
-        "48:83:77:23:2B:D3:BF:CE:24:07:48:D8:90:E6:FA:86:7C:BF:97:6D:9E:B0:43:57:EF:DF:E2:2F:14:10:C6:57"
+        "48:83:77:23:2B:D3:BF:CE:24:07:48:D8:90:E6:FA:86:7C:BF:97:6D:9E:B0:43:57:EF:DF:E2:2F:14:10:C6:57",
+        "EB:03:E4:50:B6:B2:D9:BC:A4:9F:06:C9:7F:C1:C5:27:AA:3D:3A:4C:88:D4:FE:75:53:09:05:B7:6F:B0:96:DE"
       ]
     }
   }
