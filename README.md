@@ -1,7 +1,8 @@
 # Web de Tardegelus
 
 Estos archivos se publican tal cual en GitHub Pages, en el repositorio público
-`oscaza/oscaza.github.io` (así la web queda en https://oscaza.github.io).
+`oscaza/oscaza.github.io`, con el dominio propio https://tardegelus.eu (archivo `CNAME`).
+La dirección vieja https://oscaza.github.io lleva sola al dominio nuevo.
 
 - `unirse/index.html`: la página del enlace de invitación (`/unirse/?c=ABC234`).
   Abre la app si la tienes y, si no, lleva a Google Play.
@@ -30,6 +31,9 @@ direcciones tipo `/app/mesa/...` al recargar).
 
 De momento la web solo deja entrar a quien llega con el enlace de una mesa
 (`src/lib/webAccess.ts`, `OPEN_TO_EVERYONE`).
+Quien llega sin enlace puede pulsar «Pedir acceso» y dejar su correo (tabla
+`web_solicitudes`, migración 0014). El administrador (correo en la tabla `web_admins`) las
+aprueba en Ajustes › Solicitudes de acceso (o en el menú de la web). Se borran solas a los 30 días.
 
 ## Si el enlace de invitación no abre la app
 
@@ -43,10 +47,19 @@ De momento la web solo deja entrar a quien llega con el enlace de una mesa
    app con `intent://` y, además, copia la invitación: al abrir Tardegelus a mano, la app la
    ve en el portapapeles y pregunta si quieres entrar en esa mesa.
 
-## Cambiar de dominio (por ejemplo, tardegelus.com)
+## Dominio (tardegelus.eu)
 
-- GitHub Pages › Custom domain, y los DNS de `rondas/web/pasos-dominio.md`.
-- App: `WEB_HOST` en `src/lib/joinLink.ts` y añadir el dominio nuevo (sin quitar
-  `oscaza.github.io`, para que sigan valiendo los enlaces viejos) en
-  `android.intentFilters` de `app.json`.
-- Copiar `.well-known/assetlinks.json` tal cual al dominio nuevo.
+- El archivo `CNAME` le dice a GitHub Pages el dominio. Los DNS están en
+  `rondas/web/pasos-dominio.md` (4 registros A a GitHub + `www` CNAME a `oscaza.github.io.`).
+- App: `WEB_HOST` en `src/lib/joinLink.ts`. En `app.json`, `android.intentFilters` lleva
+  `tardegelus.eu` con `autoVerify` y `oscaza.github.io` aparte y **sin** `autoVerify`
+  (esa dirección ahora redirige y, en Android 11 o menos, un dominio que no verifica
+  estropearía la verificación de todos).
+- `.well-known/assetlinks.json` se publica tal cual en el dominio.
+
+## Datos personales
+
+- El correo de contacto de la web se monta con JavaScript (`index.html`, `CONTACT_EMAIL`
+  en `src/lib/joinLink.ts`) para que no lo recojan los robots.
+- El correo del administrador de las solicitudes de acceso solo está en la tabla
+  `web_admins` de Supabase, nunca en el código (la web es pública).
