@@ -95,9 +95,16 @@
   </section>
 </main>
 <footer id="contacto">
-  Hecha en Huesca 💚🤍 · <a href="mailto:tardegelus@gmail.com">tardegelus@gmail.com</a>
+  Hecha en Huesca 💚🤍 · <a id="correo" data-u="tardegelus" data-d="gmail.com" href="#contacto">tardegelus (arroba) gmail.com</a>
 </footer>
 <script>
+// El correo se monta aquí para que no lo lean los robots que recogen correos de las webs.
+(function () {
+  var a = document.getElementById('correo');
+  var mail = a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
+  a.href = 'mailto:' + mail;
+  a.textContent = mail;
+})();
 (function () {
   var nav = document.getElementById('nav');
   var btn = nav.querySelector('.toggle');
